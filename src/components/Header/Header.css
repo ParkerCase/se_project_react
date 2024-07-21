@@ -2,6 +2,9 @@
   display: flex;
   align-items: center;
   padding: 32px 0 28px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
 }
 
 .header__logo {
@@ -14,6 +17,15 @@
 
 .header__add-clothes-btn {
   margin: 0 20px 0 auto;
+  border: none;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  background-color: transparent;
+}
+
+.header__add-clothes-btn:hover {
+  cursor: pointer;
 }
 
 .header__user-container {

@@ -7,12 +7,15 @@
 }
 
 .weather-card__temp {
-  font-size: 36px;
-  line-height: 40px;
   margin: 0;
   position: absolute;
   top: 20px;
   left: 16px;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 40px;
+  color: #fff;
+  background-color: transparent;
 }
 
 .weather-card__image {

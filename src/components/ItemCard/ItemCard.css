@@ -1,16 +1,42 @@
 .card {
   width: 323px;
+  height: 326px;
   position: relative;
   display: flex;
   justify-content: center;
+}
+
+.card:hover {
+  cursor: pointer;
 }
 
 .card__name {
   position: absolute;
   top: 15px;
   margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  height: 24px;
+  padding: 2px 12px 2px 12px;
+  border-radius: 4px;
+  color: #00000099;
+  max-width: 73px;
+  height: 24px;
+  background-color: #fff;
 }
 
 .card__image {
   width: 100%;
+  border-radius: 15px;
+  border: 1px solid #0000004d;
+  max-width: 328px;
+  max-height: 325px;
+}
+
+.cards__text {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24.8px;
+  text-align: left;
 }
