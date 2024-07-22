@@ -15,7 +15,7 @@ function App() {
     temp: { F: 999, C: 999 },
     city: "",
   });
-  const [activeModal, setActiveModal] = useState("preview");
+  const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [activeButton, setActiveButton] = useState(null);
   const [formFields, setFormFields] = useState({ name: "", link: "" });
