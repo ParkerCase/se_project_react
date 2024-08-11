@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Import Router components
 import "./App.css";
 import {
   coordinates,
@@ -13,6 +14,7 @@ import Footer from "../Footer/Footer";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import { CurrentTemperatureUnitContext } from "../Contexts/CurrentTemperatureUnitContext";
 import AddItemModal from "../AddItemModal/AddItemModal";
+import Profile from "../Profile/Profile";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -20,7 +22,7 @@ function App() {
     temp: { F: 999, C: 999 },
     city: "",
   });
-  const [activeModal, setActiveModal] = useState(""); // Only modal state
+  const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [clothingItems, setClothingItems] = useState(defaultClothingItems);
@@ -63,29 +65,46 @@ function App() {
 
   return (
     <div className="page">
-      <CurrentTemperatureUnitContext.Provider
-        value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-      >
-        <div className="page__content">
-          <Header handleAddClick={handleAddClick} weatherData={weatherData} />
-          <Main
-            weatherData={weatherData}
-            clothingItems={clothingItems}
-            handleCardClick={handleCardClick}
-          />
-          <Footer />
-        </div>
-        {activeModal === "create" && (
-          <AddItemModal
-            isOpen={activeModal === "create"}
-            onAddItem={handleAddItemSubmit}
-            onCloseModal={handleCloseModal}
-          />
-        )}
-        {activeModal === "preview" && (
-          <ItemModal selectedCard={selectedCard} onClose={handleCloseModal} />
-        )}
-      </CurrentTemperatureUnitContext.Provider>
+      <Router>
+        <CurrentTemperatureUnitContext.Provider
+          value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+        >
+          <div className="page__content">
+            <Header handleAddClick={handleAddClick} weatherData={weatherData} />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Main
+                    weatherData={weatherData}
+                    clothingItems={clothingItems}
+                    handleCardClick={handleCardClick}
+                  />
+                }
+              />
+              <Route
+                path="/profile"
+                element={<Profile handleCardClick={handleCardClick} />}
+              />
+            </Routes>
+            <Footer />
+          </div>
+          {activeModal === "create" && (
+            <AddItemModal
+              isOpen={activeModal === "create"}
+              onAddItem={handleAddItemSubmit}
+              onCloseModal={handleCloseModal}
+            />
+          )}
+          {activeModal === "preview" && (
+            <ItemModal
+              activeModal={activeModal} // Ensure correct prop
+              closeActiveModal={handleCloseModal}
+              card={selectedCard}
+            />
+          )}
+        </CurrentTemperatureUnitContext.Provider>
+      </Router>
     </div>
   );
 }

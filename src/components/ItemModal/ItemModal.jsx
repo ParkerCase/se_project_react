@@ -3,7 +3,7 @@ import closeicon from "../../assets/closeicon.svg";
 
 function ItemModal({ activeModal, closeActiveModal, card }) {
   return (
-    <div className={`modal ${activeModal === "preview" && "modal_opened"}`}>
+    <div className={`modal ${activeModal === "preview" ? "modal_opened" : ""}`}>
       <div className="modal__content_item modal__content_type_image">
         <button
           onClick={closeActiveModal}

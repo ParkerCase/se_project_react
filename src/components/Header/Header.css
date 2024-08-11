@@ -44,3 +44,8 @@
   line-height: 25px;
   text-align: left;
 }
+
+.header__username-link {
+  text-decoration: none;
+  color: #000;
+}
