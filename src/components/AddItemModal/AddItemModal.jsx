@@ -1,43 +1,29 @@
-import React, { useState, useEffect } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import React, { useState } from "react";
+import "./AddItemModal.css";
 
-const AddItemModal = ({ isOpen, onAddItem, onCloseModal }) => {
+function AddItemModal({ isOpen, onAddItem, onCloseModal }) {
   const [name, setName] = useState("");
-  const [link, setLink] = useState("");
-  const [selectedWeather, setSelectedWeather] = useState("");
-
-  // Reset the form state when the modal is opened
-  useEffect(() => {
-    if (isOpen) {
-      setName("");
-      setLink("");
-      setSelectedWeather("");
-    }
-  }, [isOpen]);
-
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleLinkChange = (e) => {
-    setLink(e.target.value);
-  };
-
-  const handleWeatherChange = (e) => {
-    setSelectedWeather(e.target.value);
-  };
-
-  const isFormValid = () => {
-    return name.trim() !== "" && link.trim() !== "" && selectedWeather !== "";
-  };
+  const [imageUrl, setImageUrl] = useState("");
+  const [weather, setWeather] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Submitting:", { name, link, selectedWeather }); // Log data to see what is being submitted
-    if (name && link && selectedWeather) {
-      onAddItem({ name, link, weather: selectedWeather });
+    if (isFormValid()) {
+      onAddItem({ name, imageUrl, weather });
+      setName("");
+      setImageUrl("");
+      setWeather("");
     }
   };
+
+  function isFormValid() {
+    return (
+      name.trim() !== "" && imageUrl.trim() !== "" && weather.trim() !== ""
+    );
+  }
+
+  if (!isOpen) return null;
 
   return (
     <ModalWithForm
@@ -45,7 +31,7 @@ const AddItemModal = ({ isOpen, onAddItem, onCloseModal }) => {
       closeActiveModal={onCloseModal}
       isOpen={isOpen}
       onSubmit={handleSubmit}
-      isFormValid={isFormValid} // Pass the form validation function
+      isFormValid={isFormValid()}
     >
       <label>
         Name
@@ -55,7 +41,8 @@ const AddItemModal = ({ isOpen, onAddItem, onCloseModal }) => {
           minLength="1"
           maxLength="30"
           value={name}
-          onChange={handleNameChange}
+          onChange={(e) => setName(e.target.value)}
+          required
         />
       </label>
       <label>
@@ -65,8 +52,9 @@ const AddItemModal = ({ isOpen, onAddItem, onCloseModal }) => {
           name="link"
           minLength="1"
           maxLength="30"
-          value={link}
-          onChange={handleLinkChange}
+          value={imageUrl}
+          onChange={(e) => setImageUrl(e.target.value)}
+          required
         />
       </label>
       <p>Select the weather type: </p>
@@ -78,8 +66,8 @@ const AddItemModal = ({ isOpen, onAddItem, onCloseModal }) => {
             type="radio"
             name="weather"
             value="hot"
-            checked={selectedWeather === "hot"}
-            onChange={handleWeatherChange}
+            checked={weather === "hot"}
+            onChange={(e) => setWeather(e.target.value)}
           />
         </div>
         <label htmlFor="warm">Warm</label>
@@ -89,8 +77,8 @@ const AddItemModal = ({ isOpen, onAddItem, onCloseModal }) => {
             type="radio"
             name="weather"
             value="warm"
-            checked={selectedWeather === "warm"}
-            onChange={handleWeatherChange}
+            checked={weather === "warm"}
+            onChange={(e) => setWeather(e.target.value)}
           />
         </div>
         <label htmlFor="cold">Cold</label>
@@ -100,13 +88,13 @@ const AddItemModal = ({ isOpen, onAddItem, onCloseModal }) => {
             type="radio"
             name="weather"
             value="cold"
-            checked={selectedWeather === "cold"}
-            onChange={handleWeatherChange}
+            checked={weather === "cold"}
+            onChange={(e) => setWeather(e.target.value)}
           />
         </div>
       </div>
     </ModalWithForm>
   );
-};
+}
 
 export default AddItemModal;

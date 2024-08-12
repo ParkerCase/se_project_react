@@ -3,7 +3,6 @@ import "./Main.css";
 
 import WeatherCard from "../WeatherCard/WeatherCard";
 import ItemCard from "../ItemCard/ItemCard";
-import { defaultClothingItems } from "../../utils/constants";
 import { CurrentTemperatureUnitContext } from "../Contexts/CurrentTemperatureUnitContext";
 
 function Main({ weatherData, handleCardClick, clothingItems }) {
@@ -17,17 +16,21 @@ function Main({ weatherData, handleCardClick, clothingItems }) {
           {currentTemperatureUnit} / You may want to wear:
         </p>
         <ul className="cards__list">
-          {clothingItems
-            .filter((item) => item.weather === weatherData.type)
-            .map((item) => {
-              return (
-                <ItemCard
-                  key={item._id}
-                  item={item}
-                  handleCardClick={handleCardClick}
-                />
-              );
-            })}
+          {Array.isArray(clothingItems) &&
+            clothingItems
+              .filter(
+                (item) =>
+                  item.weather.toLowerCase() === weatherData.type.toLowerCase()
+              )
+              .map((item) => {
+                return (
+                  <ItemCard
+                    key={item._id}
+                    item={item}
+                    handleCardClick={handleCardClick}
+                  />
+                );
+              })}
         </ul>
       </section>
     </main>

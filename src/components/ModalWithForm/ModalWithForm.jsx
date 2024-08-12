@@ -9,8 +9,9 @@ function ModalWithForm({
   closeActiveModal,
   isOpen,
   onSubmit,
-  isFormValid, // Ensure this is passed as a prop
+  isFormValid,
 }) {
+  const validForm = typeof isFormValid === "function" ? isFormValid() : true;
   return (
     <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
       <div className="modal__content">
@@ -27,9 +28,9 @@ function ModalWithForm({
           <button
             type="submit"
             className={`modal__submit ${
-              isFormValid() ? "" : "modal__submit_disabled"
+              validForm ? "" : "modal__submit_disabled"
             }`}
-            disabled={!isFormValid()}
+            disabled={!validForm}
           >
             {buttonText}
           </button>
