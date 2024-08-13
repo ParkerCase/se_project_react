@@ -12,7 +12,7 @@ import Main from "../Main/Main";
 import ItemModal from "../ItemModal/ItemModal";
 import Footer from "../Footer/Footer";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
-import { CurrentTemperatureUnitContext } from "../Contexts/CurrentTemperatureUnitContext";
+import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext";
 import AddItemModal from "../AddItemModal/AddItemModal";
 import Profile from "../Profile/Profile";
 import { getItems, addItem, deleteItem } from "../../utils/api";
