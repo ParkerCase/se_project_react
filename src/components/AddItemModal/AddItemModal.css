@@ -1,0 +1,60 @@
+.add-item__radio-label {
+  font-family: Cabinet Grotesk;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: left;
+  margin-top: 0;
+}
+
+.add-item__label {
+  font-family: Cabinet Grotesk;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: left;
+  margin: 0 0 24px;
+}
+
+.add-item__radio {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  width: 16px;
+  top: 451px;
+  left: 500px;
+  border: 1px 0px 0px 0px;
+  opacity: 0px;
+  margin-bottom: 8px;
+}
+
+.add-item__radio:last-child {
+  margin-bottom: 0;
+}
+
+.add-item__placeholder {
+  font-family: Cabinet Grotesk;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: left;
+  padding: 0;
+  border-width: 0 0 1px 0;
+  border-color: #000;
+  width: 440px;
+}
+
+.add-item__weather {
+  font-family: Cabinet Grotesk;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: left;
+  margin: 0 0 12px;
+}
+
+input[type="text"] {
+  margin: 8px 0 0 0;
+  padding: 0;
+  height: 29px;
+}

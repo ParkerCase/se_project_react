@@ -33,34 +33,37 @@ function AddItemModal({ isOpen, onAddItem, onCloseModal }) {
       onSubmit={handleSubmit}
       isFormValid={isFormValid()}
     >
-      <label>
+      <label className="add-item__label">
         Name
         <input
+          className="add-item__placeholder"
           type="text"
           name="name"
           minLength="1"
           maxLength="30"
+          placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
         />
       </label>
-      <label>
+      <label className="add-item__label">
         Image
         <input
+          className="add-item__placeholder"
           type="text"
           name="link"
           minLength="1"
           maxLength="30"
+          placeholder="Image URL"
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
           required
         />
       </label>
-      <p>Select the weather type: </p>
+      <p className="add-item__weather">Select the weather type: </p>
       <div>
-        <div>
-          <label htmlFor="hot">Hot</label>
+        <div className="add-item__radio">
           <input
             id="hot"
             type="radio"
@@ -69,9 +72,11 @@ function AddItemModal({ isOpen, onAddItem, onCloseModal }) {
             checked={weather === "hot"}
             onChange={(e) => setWeather(e.target.value)}
           />
+          <label className="add-item__radio-label" htmlFor="hot">
+            Hot
+          </label>
         </div>
-        <label htmlFor="warm">Warm</label>
-        <div>
+        <div className="add-item__radio">
           <input
             id="warm"
             type="radio"
@@ -80,9 +85,11 @@ function AddItemModal({ isOpen, onAddItem, onCloseModal }) {
             checked={weather === "warm"}
             onChange={(e) => setWeather(e.target.value)}
           />
+          <label className="add-item__radio-label" htmlFor="warm">
+            Warm
+          </label>
         </div>
-        <label htmlFor="cold">Cold</label>
-        <div>
+        <div className="add-item__radio">
           <input
             id="cold"
             type="radio"
@@ -91,6 +98,9 @@ function AddItemModal({ isOpen, onAddItem, onCloseModal }) {
             checked={weather === "cold"}
             onChange={(e) => setWeather(e.target.value)}
           />
+          <label className="add-item__radio-label" htmlFor="cold">
+            Cold
+          </label>
         </div>
       </div>
     </ModalWithForm>

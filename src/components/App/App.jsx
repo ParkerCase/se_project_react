@@ -8,7 +8,7 @@ import {
 } from "../../utils/constants";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
-import ModalWithForm from "../ModalWithForm/ModalWithForm";
+// import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import ItemModal from "../ItemModal/ItemModal";
 import Footer from "../Footer/Footer";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
@@ -118,7 +118,12 @@ function App() {
               />
               <Route
                 path="/profile"
-                element={<Profile handleCardClick={handleCardClick} />}
+                element={
+                  <Profile
+                    handleAddClick={handleAddClick}
+                    handleCardClick={handleCardClick}
+                  />
+                }
               />
             </Routes>
             <Footer />
