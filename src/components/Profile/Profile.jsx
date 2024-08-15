@@ -2,7 +2,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import ClothesSection from "../ClothesSection/ClothesSection";
 import "./Profile.css";
 
-function Profile({ handleCardClick, handleAddClick }) {
+function Profile({ clothingItems, handleCardClick, handleAddClick }) {
   return (
     <div className="profile">
       <section className="profile__sidebar">
@@ -10,6 +10,7 @@ function Profile({ handleCardClick, handleAddClick }) {
       </section>
       <section className="profile__clothing-items">
         <ClothesSection
+          clothingItems={clothingItems} // Pass the fetched items here
           handleAddClick={handleAddClick}
           handleCardClick={handleCardClick}
         />

@@ -52,9 +52,8 @@ function AddItemModal({ isOpen, onAddItem, onCloseModal }) {
         <input
           className="add-item__placeholder"
           type="text"
-          name="link"
+          name="imageUrl"
           minLength="1"
-          maxLength="30"
           placeholder="Image URL"
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}

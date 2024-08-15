@@ -19,12 +19,6 @@
       "imageUrl": "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/Cap.png?etag=f3dad389b22909cafa73cff9f9a3d591"
     },
     {
-      "_id": 3,
-      "name": "Coat",
-      "weather": "cold",
-      "imageUrl": "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/Coat.png?etag=298717ed89d5e40b1954a1831ae0bdd4"
-    },
-    {
       "_id": 4,
       "name": "Dress",
       "weather": "hot",
@@ -103,46 +97,10 @@
       "imageUrl": "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/T-Shirt.png?etag=44ed1963c44ab19cd2f5011522c5fc09"
     },
     {
-      "name": "Short Sleeve Gosling",
-      "imageUrl": "https://i.insider.com/576d4e57",
+      "name": "Shirt",
+      "imageUrl": "https://i5.walmartimages.com/seo/Ryan-Gosling-Unisex-3d-Pattern-Printed-Short-Sleeve-T-Shirts-Casual-Graphics-Tees-3x-Large_7db9218d-97e0-418a-9de6-5430e372e31e.f883b783f2082d4bcd7a13ff94fe44ff.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF",
       "weather": "warm",
       "_id": 17
-    },
-    {
-      "name": "Short Sleeve Gosling",
-      "imageUrl": "https://i.insider.com/576d4e57",
-      "weather": "warm",
-      "_id": 18
-    },
-    {
-      "name": "Short Sleeve Gosling",
-      "imageUrl": "https://i.insider.com/576d4e57",
-      "weather": "warm",
-      "_id": 19
-    },
-    {
-      "name": "Short Sleeve Gosling",
-      "imageUrl": "https://i.insider.com/576d4e57",
-      "weather": "warm",
-      "_id": 20
-    },
-    {
-      "name": "Short Sleeve Gosling",
-      "imageUrl": "https://i.insider.com/576d4e57",
-      "weather": "warm",
-      "_id": 21
-    },
-    {
-      "name": "Short Sleeve Gosling",
-      "imageUrl": "https://i.insider.com/576d4e57",
-      "weather": "warm",
-      "_id": 22
-    },
-    {
-      "name": "Short Sleeve Gosling",
-      "imageUrl": "https://i.insider.com/576d4e57",
-      "weather": "warm",
-      "_id": 23
     }
   ]
 }

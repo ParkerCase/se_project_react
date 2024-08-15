@@ -31,7 +31,13 @@ function App() {
   const handleAddItemSubmit = (newItem) => {
     addItem(newItem)
       .then((addedItem) => {
-        setClothingItems((prevItems) => [addedItem, ...defaultClothingItems]);
+        setClothingItems((prevItems) => [
+          ...prevItems,
+          {
+            ...addedItem,
+            link: addedItem.imageUrl, // Ensure consistency with defaultClothingItems
+          },
+        ]);
         setActiveModal("");
       })
       .catch((error) => {
@@ -42,15 +48,19 @@ function App() {
   const handleDeleteCard = (id) => {
     deleteItem(id)
       .then(() => {
-        setClothingItems((defaultClothingItems) =>
-          defaultClothingItems.filter((item) => item._id !== id)
-        );
+        setClothingItems((prevItems) => {
+          if (Array.isArray(prevItems)) {
+            return prevItems.filter((item) => item._id !== id);
+          } else {
+            console.error("prevItems is not an array or is undefined");
+            return prevItems; // Return as is if undefined to avoid breaking state
+          }
+        });
       })
       .catch((error) => {
         console.error("Failed to delete item:", error);
       });
   };
-
   const handleCardClick = (card) => {
     setSelectedCard(card);
     setActiveModal("preview");
@@ -89,7 +99,11 @@ function App() {
   useEffect(() => {
     getItems()
       .then((data) => {
-        setClothingItems(data.items);
+        if (Array.isArray(data)) {
+          setClothingItems(data); // Directly set the array as the state
+        } else {
+          console.error("Invalid data format:", data);
+        }
       })
       .catch((error) => {
         console.error("Failed to fetch items:", error);
@@ -120,6 +134,7 @@ function App() {
                 path="/profile"
                 element={
                   <Profile
+                    clothingItems={clothingItems}
                     handleAddClick={handleAddClick}
                     handleCardClick={handleCardClick}
                   />
