@@ -1,17 +1,17 @@
 const baseUrl = "http://localhost:3001";
 
 // Function to check response status
-function checkResponse(res) {
+export const checkResponse = (res) => {
   if (res.ok) {
     return res.json();
   }
   return Promise.reject(`Error: ${res.status}`);
-}
+};
 
 // Function to handle fetch requests with response checking
-function request(url, options) {
+export const request = (url, options) => {
   return fetch(url, options).then(checkResponse);
-}
+};
 
 // Function to get items
 export function getItems() {

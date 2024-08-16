@@ -1,10 +1,10 @@
 import React from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-import { useForm } from "../../hooks/useForm";
+import { useFormAndValidation } from "../../hooks/useFormAndValidation";
 import "./AddItemModal.css";
 
 function AddItemModal({ isOpen, onAddItem, onCloseModal }) {
-  const { values, handleChange, resetForm } = useForm({
+  const { values, handleChange, resetForm, isValid } = useFormAndValidation({
     name: "",
     imageUrl: "",
     weather: "",
@@ -13,19 +13,25 @@ function AddItemModal({ isOpen, onAddItem, onCloseModal }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (isFormValid()) {
-      onAddItem(values);
-      resetForm();
+    if (isValid && onAddItem) {
+      Promise.resolve(onAddItem(values))
+        .then(() => {
+          resetForm();
+          onCloseModal();
+        })
+        .catch((error) => {
+          console.error("Error submitting form:", error);
+        });
     }
   };
 
-  const isFormValid = () => {
-    return (
-      values.name.trim() !== "" &&
-      values.imageUrl.trim() !== "" &&
-      values.weather.trim() !== ""
-    );
-  };
+  // const isFormValid = () => {
+  //   return (
+  //     values.name.trim() !== "" &&
+  //     values.imageUrl.trim() !== "" &&
+  //     values.weather.trim() !== ""
+  //   );
+  // };
 
   if (!isOpen) return null;
 
@@ -35,7 +41,7 @@ function AddItemModal({ isOpen, onAddItem, onCloseModal }) {
       closeActiveModal={onCloseModal}
       isOpen={isOpen}
       onSubmit={handleSubmit}
-      isFormValid={isFormValid()}
+      isFormValid={isValid}
     >
       <label className="add-item__label">
         Name
@@ -46,7 +52,7 @@ function AddItemModal({ isOpen, onAddItem, onCloseModal }) {
           minLength="1"
           maxLength="30"
           placeholder="Name"
-          value={values.name}
+          value={values.name || ""}
           onChange={handleChange}
           required
         />
@@ -60,7 +66,7 @@ function AddItemModal({ isOpen, onAddItem, onCloseModal }) {
           name="imageUrl"
           minLength="1"
           placeholder="Image URL"
-          value={values.imageUrl}
+          value={values.imageUrl || ""}
           onChange={handleChange}
           required
         />

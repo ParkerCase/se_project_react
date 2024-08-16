@@ -1,12 +1,6 @@
 {
   "items": [
     {
-      "_id": 0,
-      "name": "Beanie",
-      "weather": "cold",
-      "imageUrl": "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/wtwr-project/Beanie.png?etag=bc10497cc80fa557f036e94f9999f7b2"
-    },
-    {
       "_id": 1,
       "name": "Boot",
       "weather": "cold",
@@ -107,6 +101,24 @@
       "imageUrl": "https://ae01.alicdn.com/kf/S19b706a70fd94fe99c3c34b5ee3e6080X.jpg_640x640Q90.jpg_.webp",
       "weather": "warm",
       "_id": 18
+    },
+    {
+      "name": "Sweater",
+      "imageUrl": "https://ae01.alicdn.com/kf/S19b706a70fd94fe99c3c34b5ee3e6080X.jpg_640x640Q90.jpg_.webp",
+      "weather": "hot",
+      "_id": 19
+    },
+    {
+      "name": "Sweater",
+      "imageUrl": "https://ae01.alicdn.com/kf/S19b706a70fd94fe99c3c34b5ee3e6080X.jpg_640x640Q90.jpg_.webp",
+      "weather": "warm",
+      "_id": 20
+    },
+    {
+      "name": "Sweater",
+      "imageUrl": "https://m.media-amazon.com/images/I/81pj07qbdrL._AC_UY1000_.jpg",
+      "weather": "warm",
+      "_id": 21
     }
   ]
 }
