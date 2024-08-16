@@ -2,9 +2,13 @@ import "./ItemModal.css";
 import closeicon from "../../assets/closeicon.svg";
 
 function ItemModal({ activeModal, closeActiveModal, card, handleDeleteCard }) {
-  const handleDeleteButtonClick = () => {
-    handleDeleteCard(card._id);
-    closeActiveModal();
+  const handleDeleteButtonClick = async () => {
+    try {
+      await handleDeleteCard(card._id);
+      closeActiveModal();
+    } catch (error) {
+      console.error("Failed to delete the card:", error);
+    }
   };
   return (
     <div className={`modal ${activeModal === "preview" ? "modal_opened" : ""}`}>

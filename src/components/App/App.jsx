@@ -8,7 +8,6 @@ import {
 } from "../../utils/constants";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
-// import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import ItemModal from "../ItemModal/ItemModal";
 import Footer from "../Footer/Footer";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
@@ -27,25 +26,32 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [clothingItems, setClothingItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAddItemSubmit = (newItem) => {
+    setIsLoading(true);
+
     addItem(newItem)
       .then((addedItem) => {
         setClothingItems((prevItems) => [
-          ...prevItems,
           {
             ...addedItem,
-            link: addedItem.imageUrl, // Ensure consistency with defaultClothingItems
+            link: addedItem.imageUrl,
           },
+          ...prevItems,
         ]);
-        setActiveModal("");
+        handleCloseModal();
       })
       .catch((error) => {
         console.error("Failed to add item:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   const handleDeleteCard = (id) => {
+    setIsLoading(true);
     deleteItem(id)
       .then(() => {
         setClothingItems((prevItems) => {
@@ -53,14 +59,19 @@ function App() {
             return prevItems.filter((item) => item._id !== id);
           } else {
             console.error("prevItems is not an array or is undefined");
-            return prevItems; // Return as is if undefined to avoid breaking state
+            return prevItems;
           }
         });
+        handleCloseModal();
       })
       .catch((error) => {
         console.error("Failed to delete item:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
+
   const handleCardClick = (card) => {
     setSelectedCard(card);
     setActiveModal("preview");
@@ -73,6 +84,22 @@ function App() {
   const handleCloseModal = () => {
     setActiveModal("");
   };
+
+  useEffect(() => {
+    if (!activeModal) return;
+
+    const handleEscClose = (e) => {
+      if (e.key === "Escape") {
+        handleCloseModal();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscClose);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscClose);
+    };
+  }, [activeModal]);
 
   const handleResetToDefaults = () => {
     setClothingItems([...defaultClothingItems]);
@@ -148,6 +175,7 @@ function App() {
               isOpen={activeModal === "create"}
               onAddItem={handleAddItemSubmit}
               onCloseModal={handleCloseModal}
+              buttonText={isLoading ? "Saving..." : "Save"}
             />
           )}
           {activeModal === "preview" && (
@@ -156,6 +184,7 @@ function App() {
               closeActiveModal={handleCloseModal}
               card={selectedCard}
               handleDeleteCard={handleDeleteCard}
+              buttonText={isLoading ? "Deleting..." : "Delete"}
             />
           )}
         </CurrentTemperatureUnitContext.Provider>

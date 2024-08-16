@@ -101,6 +101,12 @@
       "imageUrl": "https://i5.walmartimages.com/seo/Ryan-Gosling-Unisex-3d-Pattern-Printed-Short-Sleeve-T-Shirts-Casual-Graphics-Tees-3x-Large_7db9218d-97e0-418a-9de6-5430e372e31e.f883b783f2082d4bcd7a13ff94fe44ff.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF",
       "weather": "warm",
       "_id": 17
+    },
+    {
+      "name": "Hat",
+      "imageUrl": "https://ae01.alicdn.com/kf/S19b706a70fd94fe99c3c34b5ee3e6080X.jpg_640x640Q90.jpg_.webp",
+      "weather": "warm",
+      "_id": 18
     }
   ]
 }
