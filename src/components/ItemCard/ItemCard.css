@@ -40,3 +40,20 @@
   line-height: 24.8px;
   text-align: left;
 }
+
+.item-card__like-button {
+  background-color: transparent;
+  border: none;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.item-card__like-button:hover {
+  color: #007bff;
+}
+
+.item-card__like-button_active {
+  color: #007bff;
+  font-weight: bold;
+}
