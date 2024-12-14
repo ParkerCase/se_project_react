@@ -29,6 +29,7 @@
 
 .header__add-clothes-btn:hover {
   cursor: pointer;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .header__user-container {
@@ -75,4 +76,60 @@
   font-size: 20px;
   font-weight: 700;
   text-transform: uppercase;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header__auth-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.header__button {
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.header__button:hover {
+  text-decoration: underline;
+}
+
+.header__login-btn {
+  background-color: transparent;
+  font-weight: 700;
+  margin: 0;
+  padding: 0 0 0 20px;
+}
+
+.header__login-btn:hover {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.header__register-btn {
+  background-color: transparent;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+.header__register-btn:hover {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.header__logout-btn {
+  background: none;
+  border: none;
+  color: #e63946;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.header__logout-btn:hover {
+  text-decoration: underline;
 }

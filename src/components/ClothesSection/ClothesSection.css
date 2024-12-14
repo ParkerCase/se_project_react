@@ -36,7 +36,7 @@
 }
 
 .clothes-section__button:hover {
-  background-color: #e0e0e0;
+  background-color: transparent;
   color: #000;
 }
 

@@ -5,8 +5,9 @@ import WeatherCard from "../WeatherCard/WeatherCard";
 import ItemCard from "../ItemCard/ItemCard";
 import { CurrentTemperatureUnitContext } from "@contexts/CurrentTemperatureUnitContext";
 
-function Main({ weatherData, handleCardClick, clothingItems }) {
+function Main({ weatherData, handleCardClick, clothingItems, onCardLike }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
+
   return (
     <main>
       <WeatherCard weatherData={weatherData} />
@@ -20,6 +21,7 @@ function Main({ weatherData, handleCardClick, clothingItems }) {
             clothingItems
               .filter(
                 (item) =>
+                  item.weather &&
                   item.weather.toLowerCase() === weatherData.type.toLowerCase()
               )
               .map((item) => {

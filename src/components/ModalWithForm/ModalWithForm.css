@@ -22,16 +22,17 @@
   padding: 0;
 }
 
-/* .modal__label {
+.modal__label {
   font-size: 16px;
   line-height: 1.2;
   font-weight: 700;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
+  margin: 0;
 }
 
 .modal__label:last-child {
   margin-bottom: 0;
-} */
+}
 
 .modal__close {
   position: absolute;
@@ -62,15 +63,6 @@
   flex-direction: column;
   width: 100%;
 }
-
-/* .modal__input {
-  margin: 8px 0 24px 0;
-  padding: 0;
-  display: block;
-  border-width: 0 0 1px 0;
-  border-color: #000;
-  width: 440px;
-} */
 
 .modal__legend {
   font-size: 16px;
@@ -103,7 +95,6 @@
   color: #fff;
   font-size: 16px;
   font: Cabinet Grotesk;
-  margin-top: 32px;
 }
 
 .modal__submit:hover {
@@ -117,4 +108,56 @@
 .modal__submit_disabled {
   cursor: not-allowed;
   background-color: #0000004d;
+  color: #fff;
+  font-size: 16px;
+  font: Cabinet Grotesk;
+}
+
+/* Red error styles for labels */
+/* Error styles for labels */
+.modal__label--error {
+  color: #ff4d4d; /* Turn the label red */
+}
+
+/* Error styles for inputs */
+.modal__input--error {
+  border-color: #ff4d4d; /* Turn the border red */
+}
+
+/* Error message styling */
+.modal__error {
+  color: #ff4d4d;
+  margin-top: -12px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+/* Styling for the "or Sign Up" link */
+.modal__link {
+  text-align: center;
+  margin-top: 0;
+}
+
+.modal__actions {
+  display: flex;
+  gap: 8px;
+  margin: 32px 0 0 0;
+  align-items: center;
+}
+
+.modal__footer {
+  margin-left: 12px;
+  padding: 0;
+}
+
+.modal__link {
+  color: #000;
+  opacity: 50%;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.modal__link:hover {
+  text-decoration: underline;
 }

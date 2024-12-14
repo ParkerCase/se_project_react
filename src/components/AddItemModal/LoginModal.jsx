@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import "../ModalWithForm/ModalWithForm.css";
+import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
-function LoginModal({ onSubmit, onClose }) {
+function LoginModal({ onSubmit, onClose, errorMessage, isOpen }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -9,28 +11,48 @@ function LoginModal({ onSubmit, onClose }) {
     onSubmit({ email, password });
   };
 
+  const isFormValid = () => email.trim() !== "" && password.trim() !== "";
+
   return (
-    <div className="modal">
-      <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Sign In</button>
-        <button onClick={onClose}>Cancel</button>
-      </form>
-    </div>
+    <ModalWithForm
+      title="Log In"
+      buttonText="Log In"
+      closeActiveModal={onClose}
+      onSubmit={handleSubmit}
+      isOpen={isOpen}
+      isFormValid={isFormValid}
+      renderFooter={
+        <a
+          href="#"
+          className="modal__link"
+          onClick={(e) => {
+            e.preventDefault();
+            window.history.pushState({}, "", "/signup");
+            window.dispatchEvent(new PopStateEvent("popstate"));
+          }}
+        >
+          or Sign Up
+        </a>
+      }
+    >
+      <label>Email</label>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        autoComplete="email"
+      />
+      <label>Password</label>
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+        autoComplete="current-password"
+      />
+      {errorMessage && <p className="modal__error">{errorMessage}</p>}
+    </ModalWithForm>
   );
 }
 

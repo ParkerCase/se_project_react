@@ -2,6 +2,7 @@ import React from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { useFormAndValidation } from "../../hooks/useFormAndValidation";
 import "./AddItemModal.css";
+import "../ModalWithForm/ModalWithForm.css";
 
 function AddItemModal({ isOpen, onAddItem, onCloseModal }) {
   const { values, handleChange, resetForm, isValid } = useFormAndValidation({
@@ -10,30 +11,27 @@ function AddItemModal({ isOpen, onAddItem, onCloseModal }) {
     weather: "",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  console.log("AddItemModal isOpen:", isOpen);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent the form from navigating away
 
     if (isValid && onAddItem) {
-      Promise.resolve(onAddItem(values))
-        .then(() => {
-          resetForm();
-          onCloseModal();
-        })
-        .catch((error) => {
-          console.error("Error submitting form:", error);
-        });
+      try {
+        await onAddItem(values); // Wait for the onAddItem function to complete
+        resetForm(); // Reset form fields
+        onCloseModal(); // Close the modal
+      } catch (error) {
+        console.error("Error submitting form:", error);
+      }
     }
   };
 
-  // const isFormValid = () => {
-  //   return (
-  //     values.name.trim() !== "" &&
-  //     values.imageUrl.trim() !== "" &&
-  //     values.weather.trim() !== ""
-  //   );
-  // };
-
   if (!isOpen) return null;
+
+  console.log("Rendering AddItemModal");
+  console.log("AddItemModal isOpen:", isOpen);
+  console.log("Form isValid:", isValid);
 
   return (
     <ModalWithForm
@@ -41,12 +39,12 @@ function AddItemModal({ isOpen, onAddItem, onCloseModal }) {
       closeActiveModal={onCloseModal}
       isOpen={isOpen}
       onSubmit={handleSubmit}
-      isFormValid={isValid}
+      isFormValid={() => isValid}
     >
       <label className="add-item__label">
         Name
         <input
-          className="add-item__placeholder"
+          className="modal__input"
           type="text"
           name="name"
           minLength="1"
@@ -58,10 +56,10 @@ function AddItemModal({ isOpen, onAddItem, onCloseModal }) {
         />
       </label>
 
-      <label className="add-item__label">
+      <label className="modal__input">
         Image
         <input
-          className="add-item__placeholder"
+          className=""
           type="text"
           name="imageUrl"
           minLength="1"

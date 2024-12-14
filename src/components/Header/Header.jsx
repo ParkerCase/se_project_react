@@ -6,7 +6,12 @@ import logo from "../../assets/logo.svg";
 import avatar from "../../assets/avatar.svg";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function Header({ handleAddClick, weatherData }) {
+function Header({
+  handleAddClick,
+  handleOpenLoginModal,
+  handleOpenRegisterModal,
+  weatherData,
+}) {
   const currentDate = new Date().toLocaleString("default", {
     month: "long",
     day: "numeric",
@@ -14,51 +19,77 @@ function Header({ handleAddClick, weatherData }) {
 
   const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
 
+  // Add safe defaults for currentUser
+  const userName = currentUser?.name || "Guest";
+  const userAvatar = currentUser?.avatar || avatar;
+
   return (
     <header className="header">
+      {/* Logo */}
       <Link to="/" className="header__logo-link">
         <img className="header__logo" src={logo} alt="Logo" />
       </Link>
 
+      {/* Current date and city */}
       <p className="header__date-and-location">
         {currentDate}, {weatherData.city}
       </p>
+
+      {/* Temperature unit toggle switch */}
       <ToggleSwitch />
 
+      {/* Add Clothes button */}
       <button
-        onClick={handleAddClick}
+        onClick={(e) => {
+          e.preventDefault(); // Prevent any form submission or navigation
+          handleAddClick();
+        }}
         type="button"
         className="header__add-clothes-btn"
       >
         + Add Clothes
       </button>
 
+      {/* User authentication buttons */}
       <div className="header__user-container">
         {isLoggedIn ? (
           <>
+            {/* Display user profile and avatar if logged in */}
             <Link to="/profile" className="header__username-link">
-              <p className="header__username">{currentUser.name}</p>
+              <p className="header__username">{userName}</p>
             </Link>
             <Link to="/profile" className="header__avatar-link">
-              {currentUser.avatar ? (
-                <img
-                  src={currentUser.avatar}
-                  alt="Profile"
-                  className="header__avatar"
-                />
-              ) : (
-                <div className="header__avatar-placeholder">
-                  {currentUser.name.charAt(0).toUpperCase()}
-                </div>
-              )}
+              <img
+                src={userAvatar}
+                alt={`${userName}'s avatar`}
+                className="header__avatar"
+              />
             </Link>
           </>
         ) : (
-          <Link to="/login" className="header__login-link">
-            <button type="button" className="header__login-btn">
+          <>
+            {/* Sign Up button */}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                handleOpenRegisterModal(); // Opens Register Modal
+              }}
+              className="header__register-btn"
+            >
+              Sign Up
+            </button>
+
+            {/* Log In button */}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                handleOpenLoginModal(); // Opens Login Modal
+              }}
+              className="header__login-btn"
+            >
               Log In
             </button>
-          </Link>
+          </>
         )}
       </div>
     </header>

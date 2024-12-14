@@ -30,6 +30,7 @@
 
 .add-item__radio:last-child {
   margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .add-item__placeholder {
@@ -50,7 +51,7 @@
   font-weight: 700;
   line-height: 20px;
   text-align: left;
-  margin: 0 0 12px;
+  margin: 24px 0 12px;
 }
 
 input[type="text"] {

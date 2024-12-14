@@ -8,9 +8,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 999;
 }
 
-.modal__content {
+.modal__content-profile {
   background: white;
   padding: 20px;
   border-radius: 8px;
@@ -36,17 +37,72 @@
 }
 
 .modal__save-btn {
-  margin-top: 15px;
+  margin-top: 32px;
   padding: 8px 16px;
   font-size: 16px;
   font-weight: bold;
   color: white;
-  background-color: #007bff;
+  background-color: #000;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  width: 128px;
+  height: 36px;
 }
 
 .modal__save-btn:hover {
-  background-color: #0056b3;
+  background-color: #000;
+  opacity: 0.6;
+}
+
+.modal_form {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.modal label {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.modal input {
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 1);
+  font-size: 16px;
+  padding: 0 0 4px;
+  margin: 8px 0 24px 0;
+  padding: 0;
+  display: block;
+  font-weight: 700;
+  line-height: 20px;
+
+  width: 440px;
+}
+
+.modal input:last-of-type {
+  margin-bottom: 0;
+}
+
+.modal__input_type_error {
+  border-bottom: 1px solid #ff0000 !important;
+}
+
+.modal__error {
+  color: #ff0000;
+  font-size: 16px;
+  margin-top: 4px;
+  display: block;
+  text-align: left;
+  height: 12px;
+  padding-bottom: 8px;
+}
+
+.modal__submit_disabled {
+  background-color: #000000;
+  opacity: 0.3;
+  cursor: not-allowed;
 }

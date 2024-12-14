@@ -5,12 +5,27 @@ export const checkResponse = (res) => {
   if (res.ok) {
     return res.json();
   }
-  return Promise.reject(`Error: ${res.status}`);
+  // Check if the response is 401 Unauthorized
+  if (res.status === 401) {
+    // Clear the token and redirect to login
+    localStorage.removeItem("jwt");
+    window.location.href = "/login"; // Redirect to login page
+    return Promise.reject("Unauthorized access - please log in again.");
+  }
+  return res.text().then((text) => {
+    console.error("Error:", text);
+    return Promise.reject(`Error: ${res.status}`);
+  });
 };
 
 // Function to handle fetch requests with response checking
 export const request = (url, options) => {
-  return fetch(url, options).then(checkResponse);
+  return fetch(url, options)
+    .then(checkResponse)
+    .catch((error) => {
+      console.error("Request failed:", error);
+      throw error;
+    });
 };
 
 // Function to get items
@@ -18,9 +33,8 @@ export function getItems() {
   return fetch(`${baseUrl}/items`)
     .then((res) => {
       if (!res.ok) {
-        // Log the response if it's not OK to see the exact error
         return res.text().then((text) => {
-          console.error("Failed to fetch items:", text);
+          console.error(`Failed to fetch items from ${baseUrl}/items:`, text);
           throw new Error(`Failed to fetch items: ${res.status}`);
         });
       }

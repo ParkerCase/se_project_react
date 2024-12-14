@@ -1,10 +1,15 @@
-import React, { useContext } from "react";
+import React from "react";
 import ItemCard from "../ItemCard/ItemCard";
 import "./ClothesSection.css";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function ClothesSection({ clothingItems, handleCardClick, handleAddClick }) {
-  const { currentUser } = useContext(CurrentUserContext);
+function ClothesSection({
+  clothingItems,
+  handleCardClick,
+  handleAddClick,
+  onCardLike,
+}) {
+  const { currentUser } = React.useContext(CurrentUserContext);
 
   const userItems = clothingItems.filter(
     (item) => item.owner === currentUser._id
@@ -29,6 +34,7 @@ function ClothesSection({ clothingItems, handleCardClick, handleAddClick }) {
               key={item._id}
               item={item}
               handleCardClick={handleCardClick}
+              onCardLike={onCardLike} // Add this prop here
             />
           ))
         ) : (
@@ -39,4 +45,4 @@ function ClothesSection({ clothingItems, handleCardClick, handleAddClick }) {
   );
 }
 
-export default ClothesSection;
+export default ClothesSection; // Ensure this is a default export

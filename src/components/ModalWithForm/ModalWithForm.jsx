@@ -4,16 +4,42 @@ import closeform from "../../assets/closeform.svg";
 
 function ModalWithForm({
   children,
-  buttonText = "Add Garment",
+  buttonText,
   title,
   closeActiveModal,
   isOpen,
   onSubmit,
-  isFormValid,
+  isFormValid = () => true, // Default validation function
+  renderFooter,
 }) {
-  const validForm = typeof isFormValid === "function" ? isFormValid() : true;
+  // Close on overlay click
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      closeActiveModal();
+    }
+  };
+
+  // Close on Escape key
+  React.useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscClose = (e) => {
+      if (e.key === "Escape") {
+        closeActiveModal();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscClose);
+    return () => {
+      document.removeEventListener("keydown", handleEscClose);
+    };
+  }, [isOpen, closeActiveModal]);
+
   return (
-    <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
+    <div
+      className={`modal ${isOpen ? "modal_opened" : ""}`}
+      onClick={handleOverlayClick}
+    >
       <div className="modal__content">
         <h2 className="modal__title">{title}</h2>
         <button
@@ -23,17 +49,28 @@ function ModalWithForm({
         >
           <img src={closeform} alt="Close button" />
         </button>
-        <form className="modal__form" onSubmit={onSubmit}>
+        <form
+          className="modal__form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit(e);
+          }}
+        >
           {children}
-          <button
-            type="submit"
-            className={`modal__submit ${
-              validForm ? "" : "modal__submit_disabled"
-            }`}
-            disabled={!validForm}
-          >
-            {buttonText}
-          </button>
+          <div className="modal__actions">
+            <button
+              type="submit"
+              className={`modal__submit ${
+                !isFormValid() ? "modal__submit_disabled" : ""
+              }`}
+              disabled={!isFormValid()}
+            >
+              Submit
+            </button>
+            {renderFooter && (
+              <div className="modal__footer">{renderFooter}</div>
+            )}
+          </div>
         </form>
       </div>
     </div>
