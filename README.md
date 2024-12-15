@@ -14,7 +14,7 @@ Key Features:
 To set up the project locally:
 
 **Clone the repository:**
-- git clone [https://github.com/your-frontend-repo-link](https://github.com/ParkerCase/se_project_react.git)
+- git clone (https://github.com/ParkerCase/se_project_react.git)
 - Navigate to the project directory: cd se_project_react
 - Install dependencies: npm install
 
