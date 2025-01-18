@@ -1,4 +1,4 @@
-import { baseUrl } from "../utils/constants";
+import { baseUrl } from "./constants";
 
 export function signup({ name, avatar, email, password }) {
   const payload = { name, avatar, email, password };
@@ -30,7 +30,6 @@ export function signup({ name, avatar, email, password }) {
 
 export function signin({ email, password }) {
   console.log("Attempting signin with:", { email, password });
-
   return fetch(`${baseUrl}/signin`, {
     method: "POST",
     headers: {
@@ -40,8 +39,7 @@ export function signin({ email, password }) {
   })
     .then(async (res) => {
       const data = await res.json();
-      console.log("Signin response:", data); // Log the actual response
-
+      console.log("Signin response:", data);
       if (!res.ok) {
         throw new Error(data.message || "Login failed");
       }
@@ -54,27 +52,23 @@ export function signin({ email, password }) {
 }
 
 export function checkToken(token) {
-  console.log("Checking token:", token);
-
   if (!token) {
-    return Promise.reject(new Error("Token missing"));
+    return Promise.reject(new Error("Token is missing"));
   }
 
   return fetch(`${baseUrl}/users/me`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   })
     .then(async (res) => {
-      const data = await res.json();
-      console.log("Token check response:", data); // Log the response
-
-      if (!res.ok) {
-        throw new Error(data.message || "Token validation failed");
+      if (res.ok) {
+        return res.json();
       }
-      return data;
+      const error = await res.json();
+      return Promise.reject(error);
     })
     .catch((error) => {
       console.error("Token validation error:", error);

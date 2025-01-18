@@ -3,7 +3,7 @@ import "../ModalWithForm/ModalWithForm.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { signup } from "../../utils/auth";
 
-function RegisterModal({ onSubmit, onClose, isOpen }) {
+function RegisterModal({ onSubmit, onClose, isOpen, handleToggleModal }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -130,67 +130,86 @@ function RegisterModal({ onSubmit, onClose, isOpen }) {
       onSubmit={handleSubmit}
       isOpen={isOpen}
       isFormValid={isFormValid}
+      renderFooter={
+        <button
+          className="modal__link"
+          onClick={(e) => {
+            e.preventDefault();
+            handleToggleModal("login");
+          }}
+        >
+          or Log In
+        </button>
+      }
     >
       {errors.submit && <p className="modal__error">{errors.submit}</p>}
 
-      <label>Name*</label>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        onBlur={() => handleBlur("name")}
-        className={`modal__input ${
-          touched.name && errors.name ? "modal__input_type_error" : ""
-        }`}
-        required
-      />
-      {touched.name && errors.name && (
-        <span className="modal__error">{errors.name}</span>
-      )}
+      <div className="modal__input-group">
+        <label className="modal__label">Name*</label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          onBlur={() => handleBlur("name")}
+          className={`modal__input ${
+            touched.name && errors.name ? "modal__input_type_error" : ""
+          }`}
+          required
+        />
+        {touched.name && errors.name && (
+          <span className="modal__error">{errors.name}</span>
+        )}
+      </div>
 
-      <label>Email*</label>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        onBlur={() => handleBlur("email")}
-        className={`modal__input ${
-          touched.email && errors.email ? "modal__input_type_error" : ""
-        }`}
-        required
-      />
-      {touched.email && errors.email && (
-        <span className="modal__error">{errors.email}</span>
-      )}
+      <div className="modal__input-group">
+        <label className="modal__label">Email*</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onBlur={() => handleBlur("email")}
+          className={`modal__input ${
+            touched.email && errors.email ? "modal__input_type_error" : ""
+          }`}
+          required
+        />
+        {touched.email && errors.email && (
+          <span className="modal__error">{errors.email}</span>
+        )}
+      </div>
 
-      <label>Password*</label>
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        onBlur={() => handleBlur("password")}
-        className={`modal__input ${
-          touched.password && errors.password ? "modal__input_type_error" : ""
-        }`}
-        required
-      />
-      {touched.password && errors.password && (
-        <span className="modal__error">{errors.password}</span>
-      )}
+      <div className="modal__input-group">
+        <label className="modal__label">Password*</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onBlur={() => handleBlur("password")}
+          className={`modal__input ${
+            touched.password && errors.password ? "modal__input_type_error" : ""
+          }`}
+          required
+        />
+        {touched.password && errors.password && (
+          <span className="modal__error">{errors.password}</span>
+        )}
+      </div>
 
-      <label>Avatar URL (Optional)</label>
-      <input
-        type="text"
-        value={avatar}
-        onChange={(e) => setAvatar(e.target.value)}
-        onBlur={() => handleBlur("avatar")}
-        className={`modal__input ${
-          touched.avatar && errors.avatar ? "modal__input_type_error" : ""
-        }`}
-      />
-      {touched.avatar && errors.avatar && (
-        <span className="modal__error">{errors.avatar}</span>
-      )}
+      <div className="modal__input-group">
+        <label className="modal__label">Avatar URL (Optional)</label>
+        <input
+          type="text"
+          value={avatar}
+          onChange={(e) => setAvatar(e.target.value)}
+          onBlur={() => handleBlur("avatar")}
+          className={`modal__input ${
+            touched.avatar && errors.avatar ? "modal__input_type_error" : ""
+          }`}
+        />
+        {touched.avatar && errors.avatar && (
+          <span className="modal__error">{errors.avatar}</span>
+        )}
+      </div>
     </ModalWithForm>
   );
 }

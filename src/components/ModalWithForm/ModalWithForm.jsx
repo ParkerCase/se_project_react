@@ -65,7 +65,7 @@ function ModalWithForm({
               }`}
               disabled={!isFormValid()}
             >
-              Submit
+              {buttonText || "Submit"} {/* Use the buttonText prop here */}
             </button>
             {renderFooter && (
               <div className="modal__footer">{renderFooter}</div>

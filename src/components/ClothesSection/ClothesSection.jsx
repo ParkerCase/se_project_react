@@ -1,3 +1,5 @@
+// Update ClothesSection.jsx
+
 import React from "react";
 import ItemCard from "../ItemCard/ItemCard";
 import "./ClothesSection.css";
@@ -11,8 +13,9 @@ function ClothesSection({
 }) {
   const { currentUser } = React.useContext(CurrentUserContext);
 
-  const userItems = clothingItems.filter(
-    (item) => item.owner === currentUser._id
+  // Filter items to show
+  const itemsToShow = clothingItems.filter(
+    (item) => !item.owner || item.owner === currentUser?._id
   );
 
   return (
@@ -28,13 +31,13 @@ function ClothesSection({
         </button>
       </div>
       <ul className="clothes-section__cards-list">
-        {userItems.length > 0 ? (
-          userItems.map((item) => (
+        {itemsToShow.length > 0 ? (
+          itemsToShow.map((item) => (
             <ItemCard
-              key={item._id}
+              key={item._id || `default-${item.id}`} // Ensure unique keys for both user and default items
               item={item}
               handleCardClick={handleCardClick}
-              onCardLike={onCardLike} // Add this prop here
+              onCardLike={onCardLike}
             />
           ))
         ) : (
@@ -44,5 +47,4 @@ function ClothesSection({
     </div>
   );
 }
-
-export default ClothesSection; // Ensure this is a default export
+export default ClothesSection;

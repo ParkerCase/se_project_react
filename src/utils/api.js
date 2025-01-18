@@ -28,24 +28,6 @@ export const request = (url, options) => {
     });
 };
 
-// Function to get items
-export function getItems() {
-  return fetch(`${baseUrl}/items`)
-    .then((res) => {
-      if (!res.ok) {
-        return res.text().then((text) => {
-          console.error(`Failed to fetch items from ${baseUrl}/items:`, text);
-          throw new Error(`Failed to fetch items: ${res.status}`);
-        });
-      }
-      return res.json();
-    })
-    .catch((error) => {
-      console.error("Error fetching items:", error);
-      throw error;
-    });
-}
-
 // Function to add a like to an item
 export function addCardLike(itemId) {
   const token = localStorage.getItem("jwt");
@@ -53,21 +35,45 @@ export function addCardLike(itemId) {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
-  }).then(checkResponse);
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Error: ${res.status}`);
+  });
 }
 
-// Function to remove a like from an item
 export function removeCardLike(itemId) {
   const token = localStorage.getItem("jwt");
   return fetch(`${baseUrl}/items/${itemId}/likes`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
-  }).then(checkResponse);
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Error: ${res.status}`);
+  });
+}
+
+export function getItems() {
+  const token = localStorage.getItem("jwt");
+  return fetch(`${baseUrl}/items`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Error: ${res.status}`);
+  });
 }
 
 // Function to add a new item

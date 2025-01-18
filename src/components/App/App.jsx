@@ -80,19 +80,16 @@ function App() {
     setRegisterModalOpen(false); // Ensure all modals are closed
     setLoginModalOpen(false);
     setEditProfileModalOpen(false);
+  };
 
-    console.log("Modal states:", {
-      activeModal,
-      isLoginModalOpen,
-      isRegisterModalOpen,
-    });
-
-    if (isLoggedIn) {
-      console.log("Navigating to profile");
-      navigate("/profile", { replace: true }); // Navigate to the profile route
-    } else {
-      console.log("Navigating to home");
-      navigate("/", { replace: true }); // Navigate to the home route
+  const handleToggleModal = (modalType) => {
+    setActiveModal(modalType);
+    if (modalType === "login") {
+      setLoginModalOpen(true);
+      setRegisterModalOpen(false);
+    } else if (modalType === "signup") {
+      setLoginModalOpen(false);
+      setRegisterModalOpen(true);
     }
   };
 
@@ -112,7 +109,6 @@ function App() {
   const handleSignin = async (userData) => {
     try {
       console.log("Starting signin process with:", userData);
-
       const response = await signin(userData);
       console.log("Signin response received:", response);
 
@@ -123,22 +119,19 @@ function App() {
       localStorage.setItem("jwt", response.token);
       console.log("Token stored in localStorage");
 
-      // Verify token and get user data
       const userInfo = await checkToken(response.token);
       console.log("User info received:", userInfo);
 
-      // Modified to match actual response structure
-      // Update this based on your actual API response structure
       const user = userInfo.data || userInfo;
-
       if (!user) {
         throw new Error("Invalid user data received");
       }
 
       setCurrentUser(user);
       setIsLoggedIn(true);
+
       handleCloseModal();
-      navigate("/profile", { replace: true });
+      navigate("/profile");
     } catch (err) {
       console.error("Login error:", err);
       alert(err.message || "Login failed. Please check your credentials.");
@@ -163,11 +156,11 @@ function App() {
     localStorage.removeItem("jwt");
     setCurrentUser(null);
     setIsLoggedIn(false);
-    setClothingItems([]);
-    // Only navigate to login when explicitly signing out
-    if (window.location.pathname === "/profile") {
-      navigate("/", { replace: true });
-    }
+    setClothingItems([...defaultClothingItems]);
+    setActiveModal(""); // Reset active modal
+    setLoginModalOpen(false);
+    setRegisterModalOpen(false);
+    navigate("/");
   };
 
   const handleAddItemSubmit = async (newItem) => {
@@ -206,27 +199,61 @@ function App() {
     }
   };
 
+  // In App.jsx
   const handleDeleteCard = (id) => {
-    deleteItem(id)
-      .then(() =>
-        setClothingItems((prevItems) =>
-          prevItems.filter((item) => item._id !== id)
-        )
-      )
-      .catch(console.error);
+    console.log("Current clothingItems before delete:", clothingItems);
+
+    setClothingItems((prevItems) => {
+      // Filter out the item regardless of whether it's default or user-created
+      const filteredItems = prevItems.filter((item) => {
+        // Check both id and _id to catch both types of items
+        return item.id !== id && item._id !== id;
+      });
+
+      console.log("Filtered items:", filteredItems);
+      return filteredItems;
+    });
+
+    handleCloseModal();
   };
 
+  // In App.jsx
   const handleCardLike = async ({ id, isLiked }) => {
-    try {
-      const updatedCard = !isLiked
-        ? await addCardLike(id)
-        : await removeCardLike(id);
+    if (!isLoggedIn || !currentUser) return;
 
-      setClothingItems((cards) =>
-        cards.map((c) => (c._id === id ? updatedCard : c))
-      );
-    } catch (error) {
-      console.error("Error updating like:", error);
+    console.log("Like operation:", { id, isLiked, currentUser });
+
+    setClothingItems((prevItems) => {
+      return prevItems.map((item) => {
+        // Check if this is the item we want to update
+        if (item.id === id || item._id === id) {
+          const currentLikes = Array.isArray(item.likes) ? item.likes : [];
+          const newLikes = isLiked
+            ? currentLikes.filter((likeId) => likeId !== currentUser._id)
+            : [...currentLikes, currentUser._id];
+
+          return {
+            ...item,
+            likes: newLikes,
+          };
+        }
+        return item;
+      });
+    });
+
+    // Only make API calls for user-created items (those with _id)
+    if (typeof id === "string") {
+      try {
+        const updatedCard = isLiked
+          ? await removeCardLike(id)
+          : await addCardLike(id);
+
+        setClothingItems((prevItems) =>
+          prevItems.map((item) => (item._id === id ? updatedCard : item))
+        );
+      } catch (error) {
+        console.error("Error updating like on server:", error);
+      }
     }
   };
 
@@ -248,44 +275,82 @@ function App() {
     }
   };
 
+  const filterItemsByWeather = (items, weatherType) => {
+    return items.filter(
+      (item) => item.weather?.toLowerCase() === weatherType?.toLowerCase()
+    );
+  };
+
   const handleResetToDefaults = () => {
     setClothingItems([...defaultClothingItems]);
   };
 
   // Effects for URL-based Modals
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      checkToken(jwt)
+        .then((res) => {
+          if (res && res.data) {
+            setCurrentUser(res.data);
+            setIsLoggedIn(true);
+            getItems()
+              .then((items) => {
+                setClothingItems([...defaultClothingItems, ...items]);
+              })
+              .catch(console.error);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          localStorage.removeItem("jwt");
+          setIsLoggedIn(false);
+          setCurrentUser(null);
+        });
+    }
+  }, []);
 
   useEffect(() => {
-    const validateToken = async () => {
+    const validateTokenAndLoadData = async () => {
       setIsAuthenticating(true);
-
       try {
         const token = localStorage.getItem("jwt");
-
         if (!token) {
-          console.log("No token found. Staying on home page.");
+          setIsLoggedIn(false);
+          setCurrentUser(null);
+          setClothingItems([...defaultClothingItems]);
           setIsAuthenticating(false);
-          // Remove automatic redirect to login
           return;
         }
 
         const userData = await checkToken(token);
-
-        if (userData && userData.user) {
-          setCurrentUser(userData.user);
-          setIsLoggedIn(true);
-        } else {
-          // Only redirect if there was an invalid token
-          handleSignOut();
+        if (!userData) {
+          throw new Error("Invalid user data");
         }
-      } catch (err) {
-        console.error("Token validation error:", err);
-        handleSignOut();
+
+        const user = userData.data || userData;
+        setCurrentUser(user);
+        setIsLoggedIn(true);
+
+        try {
+          const userItems = await getItems();
+          setClothingItems([...defaultClothingItems, ...userItems]);
+        } catch (error) {
+          console.error("Error fetching items:", error);
+          setClothingItems([...defaultClothingItems]);
+        }
+      } catch (error) {
+        console.error("Auth error:", error);
+        localStorage.removeItem("jwt");
+        setIsLoggedIn(false);
+        setCurrentUser(null);
+        setClothingItems([...defaultClothingItems]);
       } finally {
         setIsAuthenticating(false);
       }
     };
 
-    validateToken();
+    validateTokenAndLoadData();
   }, []);
 
   useEffect(() => {
@@ -381,6 +446,31 @@ function App() {
   }, []); // Run on initial load
 
   useEffect(() => {
+    // Always ensure defaultClothingItems are available for the current weather
+    const weatherAppropriateItems = defaultClothingItems.filter(
+      (item) =>
+        item.weather &&
+        item.weather.toLowerCase() === weatherData.type.toLowerCase()
+    );
+
+    if (!isLoggedIn) {
+      // For non-logged in users, only show default items
+      setClothingItems(defaultClothingItems);
+    } else {
+      // For logged in users, fetch their items and combine with defaults
+      getItems()
+        .then((userItems) => {
+          setClothingItems([...defaultClothingItems, ...userItems]);
+        })
+        .catch((error) => {
+          console.error("Error fetching user items:", error);
+          // Fallback to default items if fetch fails
+          setClothingItems(defaultClothingItems);
+        });
+    }
+  }, [weatherData.type, isLoggedIn]);
+
+  useEffect(() => {
     console.log("Modal states:", {
       activeModal,
       isLoginModalOpen,
@@ -390,7 +480,13 @@ function App() {
 
   return (
     <CurrentUserContext.Provider
-      value={{ currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn }}
+      value={{
+        currentUser,
+        setCurrentUser,
+        isLoggedIn,
+        setIsLoggedIn,
+        isAuthenticating,
+      }}
     >
       <div className="page">
         <CurrentTemperatureUnitContext.Provider
@@ -415,7 +511,10 @@ function App() {
                 element={
                   <Main
                     weatherData={weatherData}
-                    clothingItems={clothingItems}
+                    clothingItems={filterItemsByWeather(
+                      clothingItems,
+                      weatherData.type
+                    )}
                     handleCardClick={handleCardClick}
                     handleDeleteCard={handleDeleteCard}
                     onCardLike={addCardLike}
@@ -435,6 +534,7 @@ function App() {
                       onSignOut={handleSignOut}
                       onCardLike={handleCardLike}
                       onUpdateUser={handleUpdateUser}
+                      handleDeleteCard={handleDeleteCard}
                     />
                   </PrivateRoute>
                 }
@@ -486,15 +586,17 @@ function App() {
               isOpen={isLoginModalOpen}
               onSubmit={handleSignin}
               onClose={handleCloseModal}
+              handleToggleModal={handleToggleModal}
             />
           )}
 
           {/* Register Modal */}
-          {isRegisterModalOpen && (
+          {activeModal === "signup" && (
             <RegisterModal
               isOpen={isRegisterModalOpen}
               onSubmit={handleSignup}
               onClose={handleCloseModal}
+              handleToggleModal={handleToggleModal}
             />
           )}
         </CurrentTemperatureUnitContext.Provider>

@@ -3,9 +3,14 @@ import { Navigate } from "react-router-dom";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 const PrivateRoute = ({ children }) => {
-  const { isLoggedIn } = useContext(CurrentUserContext);
+  const { isLoggedIn, isAuthenticating } = useContext(CurrentUserContext);
 
-  return isLoggedIn ? children : <Navigate to="/login" replace />;
+  // Wait for authentication check to complete
+  if (isAuthenticating) {
+    return null; // or a loading spinner
+  }
+
+  return isLoggedIn ? children : <Navigate to="/" replace />;
 };
 
 export default PrivateRoute;

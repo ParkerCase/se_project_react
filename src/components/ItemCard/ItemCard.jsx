@@ -6,22 +6,21 @@ import activeLike from "../../assets/active-like.svg";
 
 function ItemCard({ item, handleCardClick, onCardLike }) {
   const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
-  const isLiked = item.likes?.some((id) => id === currentUser?._id) || false;
 
-  const handleGarmentClick = () => {
-    handleCardClick(item);
-  };
+  const isLiked = item.likes?.some((id) => id === currentUser?._id);
 
-  const handleLike = () => {
-    if (typeof onCardLike === "function") {
-      onCardLike({ id: item._id, isLiked });
+  const handleLike = (e) => {
+    e.stopPropagation();
+    if (isLoggedIn && onCardLike) {
+      // Use either numeric id for default items or _id for user items
+      const itemId = typeof item.id === "number" ? item.id : item._id;
+      const isItemLiked = item.likes?.some((id) => id === currentUser?._id);
+      onCardLike({ id: itemId, isLiked: isItemLiked });
     }
   };
 
-  console.log("Image URL:", item.link || item.imageUrl);
-
   return (
-    <li className="card">
+    <li className="card" onClick={() => handleCardClick(item)}>
       <div className="card__header">
         <h2 className="card__name">{item.name}</h2>
         {isLoggedIn && (
@@ -41,7 +40,6 @@ function ItemCard({ item, handleCardClick, onCardLike }) {
         )}
       </div>
       <img
-        onClick={handleGarmentClick}
         className="card__image"
         src={item.imageUrl || item.link || "/api/placeholder/300/300"}
         alt={item.name}

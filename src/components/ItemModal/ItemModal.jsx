@@ -4,21 +4,15 @@ import { useContext } from "react";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function ItemModal({ activeModal, closeActiveModal, card, handleDeleteCard }) {
-  const { currentUser } = useContext(CurrentUserContext);
-  const isOwn = currentUser && card && card.owner === currentUser._id;
+  const { isLoggedIn } = useContext(CurrentUserContext);
 
-  console.log("Card data in modal:", card); // Add this debug log
-
-  const handleDeleteButtonClick = () => {
-    if (card?._id) {
-      handleDeleteCard(card._id);
-    }
-    closeActiveModal();
+  const handleDelete = () => {
+    const itemId = card.id || card._id; // Simplify the id selection
+    console.log("Deleting item with id:", itemId); // Debug log
+    handleDeleteCard(itemId);
   };
 
-  if (!card) {
-    return null;
-  }
+  if (!card) return null;
 
   return (
     <div className={`modal ${activeModal === "preview" ? "modal_opened" : ""}`}>
@@ -36,11 +30,7 @@ function ItemModal({ activeModal, closeActiveModal, card, handleDeleteCard }) {
           alt={card.name}
           className="modal__image"
           onError={(e) => {
-            console.log(
-              "Modal image failed to load:",
-              card.imageUrl || card.link
-            );
-            e.target.src = "https://placeholder.com/300x300";
+            e.target.src = "/api/placeholder/300/300";
           }}
         />
 
@@ -50,11 +40,8 @@ function ItemModal({ activeModal, closeActiveModal, card, handleDeleteCard }) {
             <p className="modal__weather">Weather: {card.weather}</p>
           </div>
 
-          {isOwn && (
-            <button
-              onClick={handleDeleteButtonClick}
-              className="modal__delete-button"
-            >
+          {isLoggedIn && (
+            <button onClick={handleDelete} className="modal__delete-button">
               Delete Item
             </button>
           )}
